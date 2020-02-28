@@ -12,11 +12,15 @@
 
     <body>
         <script src="js/three.js"></script>
-        <script src="js/OrbitControls.js"></script>
         <script src="js/stats.min.js"></script>
-        <script src="js/GLTFLoader.js"></script>
-        <script src="js/RGBELoader.js"></script>
-        <script src="js/RoughnessMipmapper.js"></script>
+
+        <script src="js/OrbitControls.js"></script>
+
+        <script type="module">
+            import { GLTFLoader } from './js/GLTFLoader.js';
+            import { RGBELoader } from './js/RGBELoader.js';
+            import { RoughnessMipmapper } from './js/RoughnessMipmapper.js';
+        </script>
 
         <div id="info">
             <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - GLTFLoader<br />
@@ -98,9 +102,9 @@
                 }
             );*/
 
-
+            var road = 'https://85ideas.com/wp-content/uploads/2015/06/Dark-Asphalt-Texture.jpg'
             var concrete = 'https://3docean.img.customer.envatousercontent.com/files/236653866/Featured.jpg?auto=compress%2Cformat&fit=crop&crop=top&w=590&h=590&s=321582fa8635db81a9818e57a69fd28e';
-            var metal = 'https://images.pexels.com/photos/978462/pexels-photo-978462.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+            var metal = 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTyVXE6L3wOJBUExQ7lkXFgwJcAcGZ-RSF2O6prdjuuQK4n8mS0';
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -125,8 +129,15 @@
 
             // floor
             var geometry = new THREE.BoxGeometry(0.1, 10, 10);
-            var material = new THREE.MeshBasicMaterial({color: 0x0000FF, wireframe: true});
-            var floor = new THREE.Mesh(geometry, material);
+            var floorMaterials = [
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // RIGHT SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // LEFT SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // TOP SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // BOTTOM SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // FRONT SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide})  // BACK SIDE
+            ];
+            var floor = new THREE.Mesh(geometry, floorMaterials);
             floor.position.x = 0;
             floor.position.y = -1;
             floor.position.z = 0;
