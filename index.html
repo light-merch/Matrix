@@ -111,12 +111,12 @@
             // create the shape
             var geometry = new THREE.BoxGeometry(1, 1, 1);
             var cubeMaterials = [
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(metal), side: THREE.DoubleSide}), // RIGHT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(metal), side: THREE.DoubleSide}), // LEFT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(metal), side: THREE.DoubleSide}), // TOP SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(metal), side: THREE.DoubleSide}), // BOTTOM SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(metal), side: THREE.DoubleSide}), // FRONT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(metal), side: THREE.DoubleSide})  // BACK SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // RIGHT SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // LEFT SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // TOP SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // BOTTOM SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // FRONT SIDE
+                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide})  // BACK SIDE
             ];
 
             // create a material, color or image texture
@@ -129,14 +129,15 @@
 
             // floor
             var geometry = new THREE.BoxGeometry(0.1, 10, 10);
-            var floorMaterials = [
+            /* var floorMaterials = [
                 new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // RIGHT SIDE
                 new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // LEFT SIDE
                 new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // TOP SIDE
                 new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // BOTTOM SIDE
                 new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // FRONT SIDE
                 new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide})  // BACK SIDE
-            ];
+            ];*/
+            var floorMaterials = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
             var floor = new THREE.Mesh(geometry, floorMaterials);
             floor.position.x = 0;
             floor.position.y = -1;
