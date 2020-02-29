@@ -45,26 +45,27 @@
                 }
                 return material;
             };
-            
-            window.onload = function() {
-                var text = new FizzyText();
-                var gui = new dat.GUI();
-                var div = document.querySelector("#some");
-                    
-                var controllerText = gui.add(text, 'message');  
-                var controllerOpacity = gui.add(text, 'opacity', 0, 1);
-                var controllerColor = gui.addColor(text, 'color0');    
-                var controllerBackground = gui.addColor(text, 'color1');  
-                var controllerDisplay = gui.add(text, 'display');
-                gui.add(text, 'explode');
-            };
+
 
             var FizzyText = function() {
                 this.message = 'dat.gui';
                 this.speed = 0.8;
-                this.displayOutline = false;
+                this.matrix_style = false;
                 this.explode = function() {};
-                // Define render logic ...
+            };
+
+
+            window.onload = function() {
+                var text = new FizzyText();
+                var gui = new dat.GUI();
+                gui.add(text, 'message');
+                control = gui.add(text, 'speed', -5, 5);
+                gui.add(text, 'matrix_style');
+                gui.add(text, 'explode');
+
+                control.onChange(function(value){
+                    cube.position.y += value;
+                });  
             };
         </script>
 
