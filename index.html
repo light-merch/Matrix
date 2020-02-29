@@ -29,7 +29,7 @@
             <a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
         </div>
 
-        <script>
+        <script type="text/javascript">
             var loadTextures = function(path, is_matrix) {
                 if (is_matrix) {
                     var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
@@ -45,12 +45,25 @@
                 }
                 return material;
             };
+            
+            window.onload = function() {
+                var text = new FizzyText();
+                var gui = new dat.GUI();
+                var div = document.querySelector("#some");
+                    
+                var controllerText = gui.add(text, 'message');  
+                var controllerOpacity = gui.add(text, 'opacity', 0, 1);
+                var controllerColor = gui.addColor(text, 'color0');    
+                var controllerBackground = gui.addColor(text, 'color1');  
+                var controllerDisplay = gui.add(text, 'display');
+                gui.add(text, 'explode');
+            };
 
             var FizzyText = function() {
                 this.message = 'dat.gui';
                 this.speed = 0.8;
                 this.displayOutline = false;
-                this.explode = function() { ... };
+                this.explode = function() {};
                 // Define render logic ...
             };
         </script>
