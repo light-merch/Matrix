@@ -29,8 +29,27 @@
             <a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
         </div>
 
+        <script>
+            function loadTextures(path, is_matrix) {
+                if (is_matrix) {
+                    var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
+                } else {
+                    var material = [
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // RIGHT SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // LEFT SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // TOP SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // BOTTOM SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // FRONT SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide})  // BACK SIDE
+                    ];
+                }
+                return material;
+            };
+        </script>
 
         <script>
+            var IS_MATRIX = true;
+
             var stats = initStats();
             var scene = new THREE.Scene();
             var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -110,14 +129,7 @@
 
             // create the shape
             var geometry = new THREE.BoxGeometry(1, 1, 1);
-            var cubeMaterials = [
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // RIGHT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // LEFT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // TOP SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // BOTTOM SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // FRONT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide})  // BACK SIDE
-            ];
+            var cubeMaterials = loadTextures(concrete, IS_MATRIX);
 
             // create a material, color or image texture
             var material = new THREE.MeshFaceMaterial(cubeMaterials);
@@ -128,16 +140,8 @@
 
 
             // floor
-            var geometry = new THREE.BoxGeometry(0.1, 10, 10);
-            /* var floorMaterials = [
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // RIGHT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // LEFT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // TOP SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // BOTTOM SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide}), // FRONT SIDE
-                new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(concrete), side: THREE.DoubleSide})  // BACK SIDE
-            ];*/
-            var floorMaterials = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
+            var geometry = new THREE.BoxGeometry(0.5, 10, 10);
+            var floorMaterials = loadTextures(road, IS_MATRIX);
             var floor = new THREE.Mesh(geometry, floorMaterials);
             floor.position.x = 0;
             floor.position.y = -1;
@@ -147,7 +151,7 @@
 
 
             // light
-            var ambientLight = new THREE.AmbientLight(0xFFFFFF, 1);
+            var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
             scene.add(ambientLight);
 
             var light1 = new THREE.PointLight(0xFFFFFF, 0.5, 500);
@@ -164,6 +168,7 @@
             point.position.y = 2;
             point.position.z = 2;
             scene.add(point);
+
 
             // game logic
             var update = function() {
