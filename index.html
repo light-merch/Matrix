@@ -13,8 +13,8 @@
     <body>
         <script src="build/three.js"></script>
         <script src="build/stats.min.js"></script>
-
         <script src="build/OrbitControls.js"></script>
+        <script src="build/dat.gui.min.js"></script>
 
         <script type="module">
             import { GLTFLoader } from './build/GLTFLoader.js';
@@ -30,7 +30,7 @@
         </div>
 
         <script>
-            function loadTextures(path, is_matrix) {
+            var loadTextures = function(path, is_matrix) {
                 if (is_matrix) {
                     var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
                 } else {
@@ -44,6 +44,14 @@
                     ];
                 }
                 return material;
+            };
+
+            var FizzyText = function() {
+                this.message = 'dat.gui';
+                this.speed = 0.8;
+                this.displayOutline = false;
+                this.explode = function() { ... };
+                // Define render logic ...
             };
         </script>
 
