@@ -67,7 +67,7 @@ import {
 	Vector3,
 	VectorKeyframeTrack,
 	sRGBEncoding
-} from "./js/three.module.js";
+} from "./build/three.module.js";
 
 var GLTFLoader = ( function () {
 
