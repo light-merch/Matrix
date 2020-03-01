@@ -71,12 +71,13 @@
 
                 matrix.onChange(function(value){
                     if (value) {
-                        IS_MATRIX = true;
+                        IS_MATRIX = false;
                         console.log("true")
                     } else {
-                        IS_MATRIX = false;
+                        IS_MATRIX = true;
                         console.log("false")
                     }
+                    add_textures(IS_MATRIX);
                 });
             };
         </script>
@@ -161,53 +162,57 @@
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-            // create the shape
-            var geometry = new THREE.BoxGeometry(1, 1, 1);
-            var cubeMaterials = loadTextures(concrete, IS_MATRIX);
 
-            // create a material, color or image texture
-            var material = new THREE.MeshFaceMaterial(cubeMaterials);
-            var cube = new THREE.Mesh(geometry, material);
-            scene.add(cube);
+            var add_textures = function(is_matrix) {
+                // create the shape
+                var geometry = new THREE.BoxGeometry(1, 1, 1);
+                var cubeMaterials = loadTextures(wood, is_matrix);
 
-            camera.position.z = 3;
+                // create a material, color or image texture
+                var material = new THREE.MeshFaceMaterial(cubeMaterials);
+                var cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
 
-
-            // floor
-            var geometry = new THREE.BoxGeometry(0.5, 10, 10);
-            var floorMaterials = loadTextures(road, IS_MATRIX);
-            var floor = new THREE.Mesh(geometry, floorMaterials);
-            floor.position.x = 0;
-            floor.position.y = -1;
-            floor.position.z = 0;
-            floor.rotation.z = 1.57;
-            scene.add(floor);
+                camera.position.z = 3;
 
 
-            // light
-            var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
-            scene.add(ambientLight);
+                // floor
+                var geometry = new THREE.BoxGeometry(0.5, 10, 10);
+                var floorMaterials = loadTextures(concrete, is_matrix);
+                var floor = new THREE.Mesh(geometry, floorMaterials);
+                floor.position.x = 0;
+                floor.position.y = -1;
+                floor.position.z = 0;
+                floor.rotation.z = 1.57;
+                scene.add(floor);
 
-            var light1 = new THREE.PointLight(0xFFFFFF, 0.5, 500);
-            light1.position.x = 3;
-            light1.position.y = 2;
-            light1.position.z = 2;
-            scene.add(light1);
 
-            // light position
-            var geometry = new THREE.SphereGeometry(0.1, 5, 5);
-            var material = new THREE.MeshBasicMaterial({color: 0x0000FF, wireframe: true});
-            var point = new THREE.Mesh(geometry, material);
-            point.position.x = 3;
-            point.position.y = 2;
-            point.position.z = 2;
-            scene.add(point);
+                // light
+                var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
+                scene.add(ambientLight);
+
+                var light1 = new THREE.PointLight(0xFFFFFF, 0.5, 500);
+                light1.position.x = 3;
+                light1.position.y = 2;
+                light1.position.z = 2;
+                scene.add(light1);
+
+                // light position
+                var geometry = new THREE.SphereGeometry(0.1, 5, 5);
+                var material = new THREE.MeshBasicMaterial({color: 0x0000FF, wireframe: true});
+                var point = new THREE.Mesh(geometry, material);
+                point.position.x = 3;                                                                                                                                                                  
+                point.position.y = 2;
+                point.position.z = 2;
+                scene.add(point);
+            }
+            add_textures();
 
 
             // game logic
             var update = function() {
-                cube.rotation.x += 0.01;
-                cube.rotation.y += 0.005;
+                // cube.rotation.x += 0.01;
+                // cube.rotation.y += 0.005;
             };
 
             // draw scene
