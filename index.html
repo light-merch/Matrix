@@ -33,7 +33,9 @@
             var loadTextures = function(path, is_matrix) {
                 if (is_matrix) {
                     var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
+                    console.log("kek");
                 } else {
+                    console.log("lol");
                     var material = [
                         new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // RIGHT SIDE
                         new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // LEFT SIDE
@@ -60,12 +62,22 @@
                 var gui = new dat.GUI();
                 gui.add(text, 'message');
                 control = gui.add(text, 'speed', -5, 5);
-                gui.add(text, 'matrix_style');
+                matrix = gui.add(text, 'matrix_style');
                 gui.add(text, 'explode');
 
                 control.onChange(function(value){
                     cube.position.y += value;
-                });  
+                });
+
+                matrix.onChange(function(value){
+                    if (value) {
+                        IS_MATRIX = true;
+                        console.log("true")
+                    } else {
+                        IS_MATRIX = false;
+                        console.log("false")
+                    }
+                });
             };
         </script>
 
@@ -143,9 +155,9 @@
                 }
             );*/
 
-            var road = 'https://85ideas.com/wp-content/uploads/2015/06/Dark-Asphalt-Texture.jpg'
-            var concrete = 'https://3docean.img.customer.envatousercontent.com/files/236653866/Featured.jpg?auto=compress%2Cformat&fit=crop&crop=top&w=590&h=590&s=321582fa8635db81a9818e57a69fd28e';
-            var metal = 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTyVXE6L3wOJBUExQ7lkXFgwJcAcGZ-RSF2O6prdjuuQK4n8mS0';
+            var wood = 'textures/wood.jpg';
+            var wood2 = 'textures/wood2.jpg';
+            var concrete = 'textures/concrete.jpg';
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
 
