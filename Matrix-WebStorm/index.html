@@ -22,20 +22,18 @@
             import { RoughnessMipmapper } from './build/RoughnessMipmapper.js';
         </script>
 
-        <div id="info">
+        <div id="inf">
             <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - GLTFLoader<br />
             Battle Damaged Sci-fi Helmet by
             <a href="https://sketchfab.com/theblueturtle_" target="_blank" rel="noopener">theblueturtle_</a><br />
             <a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
-        </div>
+        </div id="inf">
 
         <script type="text/javascript">
             var loadTextures = function(path, is_matrix) {
                 if (is_matrix) {
                     var material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
-                    console.log("kek");
                 } else {
-                    console.log("lol");
                     var material = [
                         new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // RIGHT SIDE
                         new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // LEFT SIDE
@@ -70,12 +68,14 @@
                 });
 
                 matrix.onChange(function(value){
+                    while(scene.children.length > 0){ 
+                        scene.remove(scene.children[0]); 
+                    }
+
                     if (value) {
-                        IS_MATRIX = false;
-                        console.log("true")
-                    } else {
                         IS_MATRIX = true;
-                        console.log("false")
+                    } else {
+                        IS_MATRIX = false;
                     }
                     add_textures(IS_MATRIX);
                 });
@@ -161,19 +161,18 @@
             var concrete = 'textures/concrete.jpg';
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
-
+            camera.position.z = 3;
 
             var add_textures = function(is_matrix) {
                 // create the shape
                 var geometry = new THREE.BoxGeometry(1, 1, 1);
-                var cubeMaterials = loadTextures(wood, is_matrix);
 
+                var cubeMaterials = loadTextures(wood, is_matrix);
                 // create a material, color or image texture
                 var material = new THREE.MeshFaceMaterial(cubeMaterials);
                 var cube = new THREE.Mesh(geometry, material);
-                scene.add(cube);
 
-                camera.position.z = 3;
+                scene.add(cube);
 
 
                 // floor
@@ -221,11 +220,9 @@
             };
 
             // run game loop (update, render, repeat)
-            var frameId = 0;
             var GameLoop = function() {
                 requestAnimationFrame(GameLoop);
                 stats.begin();
-                frameId ++;
 
                 update();
                 render();
