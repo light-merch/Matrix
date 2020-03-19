@@ -79,6 +79,7 @@
             var scene = new THREE.Scene();
             var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
+            var clock = new THREE.Clock(), mixer;
             var renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
@@ -161,7 +162,7 @@
                 var floorMaterials = loadTextures(concrete, is_matrix);
                 var floor = new THREE.Mesh(geometry, floorMaterials);
                 floor.position.set(0, -1, 0);
-                floor.rotation.z = 1.57
+                floor.rotation.z = 1.57;
                 scene.add(floor);
 
                 // bullet
@@ -205,6 +206,8 @@
                 requestAnimationFrame(GameLoop);
                 stats.begin();
 
+                var delta = clock.getDelta();
+                mixer.update(delta);
                 update();
                 render();
                 stats.end();
