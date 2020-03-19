@@ -13,18 +13,65 @@
     <body>
         <script src="build/stats.min.js"></script>
         <script src="build/dat.gui.min.js"></script>
-        <script src="build/OrbitControls.js"></script>
-
         <script src="game_mechanics.js"></script>
-        <script src="func.js"></script>
 
 
         <script type="module">
-            import * as THREE from "./build/three.js";
-            
+            import * as THREE from "./build/three.module.js";
+
+            import { OrbitControls } from './build/OrbitControls.js';
             import { GLTFLoader } from './build/GLTFLoader.js';
-            import { RGBELoader } from './build/RGBELoader.js';
-            import { RoughnessMipmapper } from './build/RoughnessMipmapper.js';
+            import { DRACOLoader } from './build/DRACOLoader.js';
+
+
+            const FizzyText = function () {
+                this.message = 'dat.gui';
+                this.light = 0.5;
+                this.matrix_style = false;
+                this.explode = function () {
+                };
+            };
+
+            const loadTextures = function (path, is_matrix) {
+                let material;
+                if (is_matrix) {
+                    material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: true});
+                } else {
+                    material = [
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // RIGHT SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // LEFT SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // TOP SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // BOTTOM SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide}), // FRONT SIDE
+                        new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load(path), side: THREE.DoubleSide})  // BACK SIDE
+                    ];
+                }
+                return material;
+            };
+
+            window.onload = function() {
+                const text = new FizzyText();
+                const gui = new dat.GUI();
+                gui.add(text, 'message');
+                var control = gui.add(text, 'light', 0, 1);
+                var matrix = gui.add(text, 'matrix_style');
+                gui.add(text, 'explode');
+
+                control.onChange(function(value){
+                    // press F
+                });
+
+                matrix.onChange(function(value){
+                    while(scene.children.length > 0){
+                        scene.remove(scene.children[0]);
+                    }
+
+                    IS_MATRIX = !!value;
+                    add_textures(IS_MATRIX);
+                });
+            };
+
+
 
             var IS_MATRIX = true;
 
@@ -64,8 +111,38 @@
             const wood2 = 'textures/wood2.jpg';
             const concrete = 'textures/concrete.jpg';
 
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            camera.position.z = 3;
+            var controls = new OrbitControls(camera, renderer.domElement);
+            camera.position.z = 5;
+
+            // envmap
+            var path = 'textures/Park2/';
+            var format = '.jpg';
+            var envMap = new THREE.CubeTextureLoader().load( [
+                path + 'posx' + format, path + 'negx' + format,
+                path + 'posy' + format, path + 'negy' + format,
+                path + 'posz' + format, path + 'negz' + format
+            ] );
+
+            var dracoLoader = new DRACOLoader();
+            dracoLoader.setDecoderPath('build/gltf/');
+
+            var loader = new GLTFLoader();
+            loader.setDRACOLoader(dracoLoader);
+
+            loader.load('models/tokyo.glb', function (gltf) {
+                var model = gltf.scene;
+                model.position.set(1, 1.5, 0);
+                model.scale.set(0.01, 0.01, 0.01);
+                model.traverse(function(child) {
+                    if (child.isMesh) child.material.envMap = envMap;
+                });
+                scene.add(model);
+                mixer = new THREE.AnimationMixer(model);
+                mixer.clipAction(gltf.animations[0]).play();
+                animate();
+            }, undefined, function (e) {
+                console.error(e);
+            });
 
             var add_textures = function(is_matrix) {
                 // create the shape
