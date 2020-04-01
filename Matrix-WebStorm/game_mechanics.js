@@ -9,15 +9,12 @@ class Bullet {
         this.damage = damage;
         this.effect = effect;
         this.body = shape;
-        console.log(this.body)
         this.body.position.set(this.x, this.y, this.z);
-        console.log(this.body)
     }
     update(){
         this.x += this.dx;
         this.y += this.dy;
         this.z += this.dz;
         this.body.position.set(this.x, this.y, this.z);
-        console.log(1,this.body)
     }
 }
