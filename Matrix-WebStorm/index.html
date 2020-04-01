@@ -185,11 +185,17 @@
                 scene.add(floor);
 
                 // bullet
-                var geometry = new THREE.SphereGeometry(0.1, 5, 5);
-                var material = new THREE.MeshBasicMaterial({color: 0x00FFFF, wireframe: false});
-                var sphere = new THREE.Mesh(geometry, material);
-                sphere.position.set(-3, 1, 2);
-                scene.add(sphere);
+                var sphere_geometry = new THREE.SphereGeometry(0.1, 5, 5);
+                var sphere_material = new THREE.MeshBasicMaterial({color: 0x00FFFF, wireframe: false});
+
+                var bullet1 = new Bullet(0, 0, 0, 1, 1, 1, 1, null, new THREE.Mesh(sphere_geometry, sphere_material));
+                var bullet2 = new Bullet(0, 2, 0, -1, -1, -1, 1,null, new THREE.Mesh(sphere_geometry, sphere_material));
+
+                scene.add(bullet1.body);
+                scene.add(bullet2.body);
+                bullet1.update();
+                bullet2.update();
+
 
                 // light
                 var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.8);
