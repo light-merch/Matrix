@@ -101,11 +101,39 @@
             document.addEventListener('keydown', onDocumentKeyDown, false);
             function onDocumentKeyDown(event) {
                 var keyCode = event.which;
+                // console.log(keyCode);
                 if (keyCode === 13) {
-                    var bullet = new Bullet(0, 0, 0, 0.1, 0, 0, 1, null, new THREE.Mesh(sphere_geometry, sphere_material));
+                    var bullet = new Bullet(0, 0, 0, 0.5, 0, 0, 1, null, new THREE.Mesh(sphere_geometry, sphere_material));
                     scene.add(bullet.body);
                     bullet.update();
                     bullet_list.push(bullet);
+
+                } else if (keyCode === 69) {
+                    if (player.lights) {
+                        scene.remove(directionalLightRight);
+                        scene.remove(directionalLightLeft);
+                    } else {
+                        var geometry = new THREE.SphereGeometry(0.1, 10, 10);
+                        var material = new THREE.MeshBasicMaterial({color: 0x00FFFF, wireframe: false});
+                        var point = new THREE.Mesh(geometry, material);
+                        point.position.set(2.31, 0.65, 0.74);
+                        scene.add(point);
+
+                        var geometry = new THREE.SphereGeometry(0.1, 10, 10);
+                        var material = new THREE.MeshBasicMaterial({color: 0x00FFFF, wireframe: false});
+                        var point = new THREE.Mesh(geometry, material);
+                        point.position.set(2.31, 0.65, -0.74);
+                        scene.add(point);
+
+                        var directionalLightRight = new THREE.DirectionalLight(0xffffff, 0.5);
+                        var directionalLightLeft = new THREE.DirectionalLight(0xffffff, 0.5);
+
+                        directionalLightRight.position.set(2.31, 0.65, 0.74);
+                        directionalLightLeft.position.set(2.31, 0.65, -0.74);
+
+                        scene.add(directionalLightRight);
+                        scene.add(directionalLightLeft);
+                    }
                 }
                 if (keyCode === 87) {
                     window.car.position.x += 0.1;
