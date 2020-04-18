@@ -26,6 +26,7 @@ class Player {
         this.angle = angle; // in radians
         this.lights = false;
 
+        this.list_body = [];
         this.body = shape;
         this.body.position.set(this.pos[0], this.pos[1], this.pos[2]);
     }
